@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    public class BanList:BaseID
+    public class BanList : BaseID
     {
         public string Name { get; set; }
 

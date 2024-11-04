@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    public class CardsInfo:BaseID
+    public class CardsInfo : BaseID
     {
         public string Name { get; set; }
 
@@ -23,7 +23,7 @@ namespace Core.Entities
         public string TCGDate { get; set; }
 
         public string OCGDate { get; set; }
-        
+
         public string Description { get; set; }
 
         public string PendulumDescription { get; set; }
@@ -32,9 +32,9 @@ namespace Core.Entities
 
         public int DefencePoints { get; set; }
 
-        public int Limit {  get; set; }
+        public int Limit { get; set; }
 
-        public CardsInfo(string name, string type, string attribute, string typing, string levelOrRank, string archetype, string tCGData, string oCGDate, string description, string pendulumDescription, int attackPoints, int defencePoints, int limit)
+        public CardsInfo(string name, string type, string attribute, string typing, string levelOrRank, string archetype, string tCGDate, string oCGDate, string description, string pendulumDescription, int attackPoints, int defencePoints, int limit)
         {
             Name = name;
             Type = type;
@@ -42,12 +42,13 @@ namespace Core.Entities
             Typing = typing;
             LevelOrRank = levelOrRank;
             Archetype = archetype;
-            TCGDate = tCGData;
+            TCGDate = tCGDate;
             OCGDate = oCGDate;
             Description = description;
             AttackPoints = attackPoints;
             DefencePoints = defencePoints;
             Limit = limit;
+            PendulumDescription = pendulumDescription;
         }
     }
 }

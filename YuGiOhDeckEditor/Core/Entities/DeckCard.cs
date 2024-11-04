@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    public class DeckCard:BaseID
+    public class DeckCard : BaseID
     {
         public int DeckId { get; set; } // Reference to the Deck containing the card.
 

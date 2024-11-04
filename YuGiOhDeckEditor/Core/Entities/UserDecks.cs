@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    public class UserDecks:BaseID
+    public class UserDecks : BaseID
     {
         public int UserId { get; set; } // Reference to the user
 

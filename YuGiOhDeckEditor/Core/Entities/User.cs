@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    public class User:BaseID
+    public class User : BaseID
     {
         public string Username { get; set; }
 
@@ -18,7 +18,10 @@ namespace Core.Entities
 
         public User(string username, string email, string password, string createdDate)
         {
-            
+            Username = username;
+            Email = email;
+            Password = password;
+            CreatedDate = createdDate;
         }
     }
 }

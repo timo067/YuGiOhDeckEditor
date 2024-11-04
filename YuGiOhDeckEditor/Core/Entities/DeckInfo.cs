@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    public class DeckInfo:BaseID
+    public class DeckInfo : BaseID
     {
         public string Name { get; set; }
 

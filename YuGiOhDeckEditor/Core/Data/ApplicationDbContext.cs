@@ -15,7 +15,8 @@ namespace YuGiOhDeckEditor.Data
             if (!optionsBuilder.IsConfigured)
             {
                 // Replace this with your actual database connection string
-                optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=YuGiOhDeckEditorDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+                optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=YuGiOhDeckEditorDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False", 
+                    b => b.MigrationsAssembly("YuGiOhDeckEditor"));
             }
         }
 

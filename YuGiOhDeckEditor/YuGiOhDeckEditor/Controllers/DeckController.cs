@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Core.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Core.Entities;
-using YuGiOhDeckEditor.Data;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace YuGiOhDeckEditor.Controllers
 {
-    public class DeckController : Controller
+	public class DeckController : Controller
     {
         //private readonly IDeckService _deckService;
         //private readonly ICardService _cardService;

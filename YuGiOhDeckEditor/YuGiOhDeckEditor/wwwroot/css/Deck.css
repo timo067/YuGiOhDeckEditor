@@ -1,0 +1,99 @@
+﻿/* Deck Index Page */
+.deck-index {
+    background-color: #fff;
+    padding: 50px 0;
+    text-align: center;
+}
+
+    .deck-index h1 {
+        font-size: 36px;
+        margin-bottom: 30px;
+        color: #2c3e50;
+    }
+
+.add-deck-btn .btn {
+    background-color: #e74c3c;
+    color: white;
+    padding: 15px 30px;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 30px;
+}
+
+    .add-deck-btn .btn:hover {
+        background-color: #c0392b;
+    }
+
+.deck-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.deck-card {
+    background-color: #ecf0f1;
+    padding: 20px;
+    width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+
+    .deck-card:hover {
+        transform: translateY(-10px);
+    }
+
+.deck-card-header h2 {
+    font-size: 24px;
+    color: #2c3e50;
+}
+
+.deck-card-header p {
+    font-size: 14px;
+    color: #7f8c8d;
+}
+
+.deck-card-body p {
+    font-size: 14px;
+    color: #34495e;
+    margin-bottom: 10px;
+}
+
+.deck-card-footer {
+    margin-top: 20px;
+}
+
+    .deck-card-footer .btn {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        font-size: 14px;
+        border-radius: 5px;
+        margin-right: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+        .deck-card-footer .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .deck-card-footer .btn.btn-edit {
+            background-color: #f39c12;
+        }
+
+            .deck-card-footer .btn.btn-edit:hover {
+                background-color: #e67e22;
+            }
+
+        .deck-card-footer .btn.btn-delete {
+            background-color: #e74c3c;
+        }
+
+            .deck-card-footer .btn.btn-delete:hover {
+                background-color: #c0392b;
+            }

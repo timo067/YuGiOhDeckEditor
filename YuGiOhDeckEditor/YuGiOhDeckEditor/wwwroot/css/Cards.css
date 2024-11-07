@@ -1,0 +1,69 @@
+﻿/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and general layout */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #2d3a3f;
+}
+
+.card-type {
+    font-size: 1.2em;
+    color: #7a8d8c;
+    font-style: italic;
+}
+
+/* Card details */
+.card-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.card-info,
+.card-description {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 48%;
+}
+
+    .card-info p,
+    .card-description p {
+        font-size: 1.1em;
+    }
+
+        .card-info p strong,
+        .card-description h3 {
+            color: #2d3a3f;
+        }
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.9em;
+    color: #7a8d8c;
+}

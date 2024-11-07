@@ -1,9 +1,9 @@
-﻿using Core.Entities;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using YuGiOhDeckEditor.Entities;
 
 namespace YuGiOhDeckEditor.Controllers
 {
-	public class DeckController : Controller
+    public class DeckController : Controller
     {
         //private readonly IDeckService _deckService;
         //private readonly ICardService _cardService;

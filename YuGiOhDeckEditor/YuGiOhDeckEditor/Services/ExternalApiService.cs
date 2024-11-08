@@ -1,40 +1,38 @@
-﻿using Core.Entities;
+﻿using System.Text.Json;
 using YuGiOhDeckEditor.Entities;
 
 namespace YuGiOhDeckEditor.Services
 {
     public class ExternalApiService
 	{
-		private readonly HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
-		// Constructor injection of HttpClient
-		public ExternalApiService(HttpClient httpClient)
-		{
-			_httpClient = httpClient;
-		}
+        public ExternalApiService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
 
-		// Example of an asynchronous method to get data from an API
-		public async Task<CardsInfo> GetApiResponseAsync(string apiUrl)
-		{
-			try
-			{
-				// Make an asynchronous HTTP GET request to the API
-				var response = await _httpClient.GetAsync(apiUrl);
+        // Define GetCardsInfoAsync to retrieve card information
+        public async Task<List<CardsInfo>> GetCardsInfoAsync()
+        {
+            var response = await _httpClient.GetAsync("https://db.ygoprodeck.com/api/v7/cardinfo.php"); // Replace with the correct API URL
 
-				// Ensure the response is successful (status code 200-299)
-				response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Error fetching card info: {response.ReasonPhrase}");
+            }
 
-				// Deserialize the JSON response into an object (ApiResponseModel)
-				var apiResponse = await response.Content.ReadFromJsonAsync<CardsInfo>();
+            var responseBody = await response.Content.ReadAsStringAsync();
 
-				return apiResponse;
-			}
-			catch (Exception ex)
-			{
-				// Handle exceptions (like network issues or non-200 status codes)
-				Console.WriteLine($"Error fetching data: {ex.Message}");
-				return null;
-			}
-		}
-	}
+            // Deserialize into ApiResponse first, then extract the data list
+            var apiResponse = JsonSerializer.Deserialize<ApiResponse>(responseBody);
+
+            if (apiResponse?.Data == null)
+            {
+                throw new Exception("Failed to retrieve card data from the API response.");
+            }
+
+            return apiResponse.Data;
+        }
+    }
 }

@@ -1,54 +1,29 @@
 ﻿@model IEnumerable<YuGiOhDeckEditor.Entities.CardsInfo>
 
-@{
-    ViewData["Title"] = "Index";
-}
+<h2>Card List</h2>
 
-<h1>Cards</h1>
-
-@if (Model.Any())
-{
-    <table>
-        <thead>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Attribute</th>
+            <th>Attack Points</th>
+            <th>Defense Points</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var card in Model)
+        {
             <tr>
-                <th>Name</th>
-                <th>Frame Type</th>
-                <th>Type</th>
-                <th>Attribute</th>
-                <th>Race</th>
-                <th>Level/Rank</th>
-                <th>Archetype</th>
-                <th>TCG Date</th>
-                <th>OCG Date</th>
-                <th>Description</th>
-                <th>Attack Points</th>
-                <th>Defense Points</th>
-                <th>Limit</th>
+                <td>@card.Name</td>
+                <td>@card.Type</td>
+                <td>@card.Attribute</td>
+                <td>@card.AttackPoints</td>
+                <td>@card.DefencePoints</td>
+                <td>@card.Description</td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var card in Model)
-            {
-                <tr>
-                    <td>@card.Name</td> <!-- Name of the card -->
-                    <td>@card.FrameType</td> <!-- FrameType of the card -->
-                    <td>@card.Type</td> <!-- Type (e.g., Monster, Spell, Trap) -->
-                    <td>@card.Attribute</td> <!-- Attribute (e.g., Dark, Light) -->
-                    <td>@card.Typing</td> <!-- Race or Typing (e.g., Dragon, Warrior) -->
-                    <td>@card.LevelOrRank</td> <!-- Level/Rank of the card -->
-                    <td>@card.Archetype</td> <!-- Archetype of the card -->
-                    <td>@card.TCGDate</td> <!-- TCG Date -->
-                    <td>@card.OCGDate</td> <!-- OCG Date -->
-                    <td>@card.Description</td> <!-- Description of the card -->
-                    <td>@card.AttackPoints</td> <!-- Attack Points -->
-                    <td>@card.DefencePoints</td> <!-- Defense Points -->
-                    <td>@card.Limit</td> <!-- Limit of the card -->
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>No cards found.</p>
-}
+        }
+    </tbody>
+</table>

@@ -1,29 +1,29 @@
 ﻿@model IEnumerable<YuGiOhDeckEditor.Entities.CardsInfo>
 
-<h2>Card List</h2>
+<!-- Search form -->
+<form method="get" action="@Url.Action("Index", "Card")">
+    <input type="text" name="searchQuery" placeholder="Search by card name" value="@ViewData["SearchQuery"]" />
+    <button type="submit">Search</button>
+</form>
 
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Attribute</th>
-            <th>Attack Points</th>
-            <th>Defense Points</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
+@if (Model != null && Model.Any())
+{
+    <ul>
         @foreach (var card in Model)
         {
-            <tr>
-                <td>@card.Name</td>
-                <td>@card.Type</td>
-                <td>@card.Attribute</td>
-                <td>@card.AttackPoints</td>
-                <td>@card.DefencePoints</td>
-                <td>@card.Description</td>
-            </tr>
+            <li>
+                <strong>@card.Name</strong><br />
+                Type: @card.Type<br />
+                Description: @card.Description<br />
+                Attribude: @card.Attribute<br/>
+                Attack: @card.AttackPoints<br />
+                Defense: @card.DefencePoints<br />
+                <!-- Display other card details as needed -->
+            </li>
         }
-    </tbody>
-</table>
+    </ul>
+}
+else
+{
+    <p>No cards found for your search.</p>
+}

@@ -21,31 +21,15 @@ namespace YuGiOhDeckEditor.Controllers
 
         public async Task<IActionResult> Index(string searchQuery)
         {
-            try
+            var cards = new List<CardsInfo>();
+
+            if (!string.IsNullOrEmpty(searchQuery))
             {
-
-                // Call your API service to get the cards based on the search query
-                var cardsInfo = await _externalApiService.GetCardsInfoAsync(searchQuery);
-
-                // If there are no cards, show a message
-                if (cardsInfo == null || !cardsInfo.Any())
-                {
-                    ViewBag.Message = "No cards found.";
-                }
-
-                // Set the search query in ViewData for persistence (pre-filling the search box)
-                ViewData["SearchQuery"] = searchQuery;
-
-                // Pass the list of cards to the view
-                return View(cardsInfo);
+                cards = await _externalApiService.GetCardsInfoAsync(searchQuery); // Assuming the API returns a list of cards
             }
-            catch (Exception ex)
-            {
-                // Handle errors (e.g., API failure)
-                ViewBag.Message = $"Error fetching card data: {ex.Message}";
-                return View(new List<CardsInfo>());
-            }
+
+            ViewData["SearchQuery"] = searchQuery;
+            return View(cards);
         }
-
     }
 }

@@ -6,41 +6,6 @@ body {
     padding: 0;
 }
 
-/* Navbar */
-.navbar {
-    background-color: #2c3e50;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-    .navbar .logo h2 {
-        color: #fff;
-        font-size: 24px;
-    }
-
-    .navbar .nav-links {
-        list-style: none;
-        display: flex;
-    }
-
-        .navbar .nav-links li {
-            margin-left: 2rem;
-        }
-
-            .navbar .nav-links li a {
-                color: #fff;
-                text-decoration: none;
-                font-size: 18px;
-            }
-
-                .navbar .nav-links li a:hover {
-                    color: #e74c3c;
-                }
-
-
 /* Styling the search form */
 form {
     background-color: #ffffff;
@@ -58,7 +23,7 @@ form {
     form label {
         font-size: 18px;
         font-weight: bold;
-        color: #333;
+        color: black;
         margin-bottom: 10px;
     }
 
@@ -106,7 +71,8 @@ ul {
     /* Card item styling */
     ul li {
         background-color: #ffffff;
-        padding: 15px;
+        color:black;
+        padding: 5px;
         margin-bottom: 15px;
         border-radius: 8px;
         box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -114,7 +80,7 @@ ul {
 
         ul li strong {
             font-size: 18px;
-            color: #333;
+            color: black;
             display: block;
             margin-bottom: 10px;
         }
@@ -122,7 +88,7 @@ ul {
         /* Card details styling */
         ul li p {
             margin: 5px 0;
-            color: #555;
+            color: black;
             font-size: 14px;
         }
 

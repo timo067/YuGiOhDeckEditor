@@ -66,7 +66,6 @@ namespace YuGiOhDeckEditor.Data
             // Further configurations can be added as needed, such as relationships for BanList and other tables.
         }
 
-        public DbSet<User> Users { get; set; } // Example entity
         public DbSet<CardsInfo> CardsInfo { get; set; } // Example entity
         public DbSet<DeckInfo> DeckInfo { get; set; } // Example entity
         public DbSet<BanList> BanList { get; set; } // Example entity

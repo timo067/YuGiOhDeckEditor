@@ -45,5 +45,7 @@ namespace YuGiOhDeckEditor.Entities
         public int? DefencePoints { get; set; }
 
         public int Limit { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

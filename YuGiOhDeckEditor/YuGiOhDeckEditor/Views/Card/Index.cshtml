@@ -1,17 +1,11 @@
 ﻿@model IEnumerable<YuGiOhDeckEditor.Entities.CardsInfo>
 
-<!-- Link to external CSS -->
 <link rel="stylesheet" href="~/css/Cards.css" />
 
 <!-- Search form -->
 <form method="get" action="@Url.Action("Index", "Card")">
-    <!-- Label above the search bar -->
-    <label for="searchQuery">Search Cards:</label>
-
-    <!-- Search input field -->
+    <label for="searchQuery" style="font-size: 18px; font-weight: bold;">Search Cards:</label>
     <input type="text" id="searchQuery" name="searchQuery" placeholder="Enter card name" value="@ViewData["SearchQuery"]" />
-
-    <!-- Search button -->
     <button type="submit">Search</button>
 </form>
 
@@ -21,14 +15,17 @@
         @foreach (var card in Model)
         {
             <li>
+                <img src="/Image/CardName.jpg" alt="Test Image" style="max-width: 200px; height: auto;" onerror="this.style.display='none';" />
                 <strong>@card.Name</strong><br />
                 Type: @card.Type<br />
                 Attribute: @card.Attribute<br />
                 Typing: @card.Typing<br />
-                Level/Rank: @card.LevelOrRank<br />
+                Level/Rank: @card.Scale<br />
                 Attack: @card.AttackPoints<br />
                 Defense: @card.DefencePoints<br />
                 Description: @card.Description<br />
+
+                <!-- Image debug and display -->
             </li>
         }
     </ul>

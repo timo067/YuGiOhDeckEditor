@@ -1,0 +1,112 @@
+﻿/* General styles for BanList section */
+h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 1.5rem;
+    color: #444;
+    margin-top: 20px;
+}
+
+/* Styling the form for adding a banned card */
+.banlist-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+    .banlist-form h3 {
+        font-size: 1.6rem;
+        color: #555;
+    }
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+    .form-group label {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+button {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    button:hover {
+        background-color: #c82333;
+    }
+
+/* Styling the list of banned cards */
+.banlist {
+    margin-top: 30px;
+}
+
+.banlist-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+    .banlist-item .banlist-info {
+        max-width: 70%;
+    }
+
+        .banlist-item .banlist-info strong {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .banlist-item .banlist-info p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+    .banlist-item .banlist-actions a {
+        color: #dc3545;
+        margin-left: 10px;
+        text-decoration: none;
+    }
+
+        .banlist-item .banlist-actions a:hover {
+            text-decoration: underline;
+        }
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .banlist-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+        .banlist-item .banlist-actions {
+            margin-top: 10px;
+        }
+}

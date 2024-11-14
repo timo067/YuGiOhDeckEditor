@@ -1,47 +1,57 @@
 ﻿@model IEnumerable<YuGiOhDeckEditor.Entities.BanList>
 
-@{
-    ViewData["Title"] = "Index";
-}
+<!-- Add CSS link -->
+<link rel="stylesheet" href="~/css/BanList.css" />
 
-<h1>Index</h1>
+<h2>Ban List</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CardId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LimitType)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CardId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LimitType)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<!-- BanList creation form -->
+<div class="banlist-form">
+    <h3>Add Card to Ban List</h3>
+    <form method="post" action="@Url.Action("AddToBanList", "BanList")">
+        <div class="form-group">
+            <label for="cardName">Card Name:</label>
+            <input type="text" id="cardName" name="cardName" required placeholder="Enter card name" />
+        </div>
+        <div class="form-group">
+            <label for="cardId">Card ID:</label>
+            <input type="number" id="cardId" name="cardId" required placeholder="Enter card ID" />
+        </div>
+        <div class="form-group">
+            <label for="limitType">Limit Type:</label>
+            <select id="limitType" name="limitType" required>
+                <option value="Forbidden">Forbidden</option>
+                <option value="Limited">Limited</option>
+                <option value="Semi-Limited">Semi-Limited</option>
+            </select>
+        </div>
+        <button type="submit">Ban Card</button>
+    </form>
+</div>
+
+<!-- Display list of banned cards -->
+<h3>Banned Cards</h3>
+<div class="banlist">
+    @if (Model != null && Model.Any())
+    {
+        <ul>
+            @foreach (var card in Model)
+            {
+                <li class="banlist-item">
+                    <div class="banlist-info">
+                        <strong>@card.Name</strong>
+                        <p>Card ID: @card.CardId</p>
+                        <p>Limit Type: @card.LimitType</p>
+                    </div>
+                    <div class="banlist-actions">
+                        <a href="@Url.Action("RemoveFromBanList", "BanList", new { id = card.Id })">Remove</a>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No cards are currently banned.</p>
+    }
+</div>

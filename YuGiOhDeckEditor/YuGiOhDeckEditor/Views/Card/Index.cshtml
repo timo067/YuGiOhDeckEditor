@@ -4,33 +4,65 @@
 
 <!-- Search form -->
 <form method="get" action="@Url.Action("Index", "Card")">
-    <label for="searchQuery" style="font-size: 18px; font-weight: bold;">Search Cards:</label>
-    <input type="text" id="searchQuery" name="searchQuery" placeholder="Enter card name" value="@ViewData["SearchQuery"]" />
-    <button type="submit">Search</button>
+	<!-- Label above the search bar -->
+	<label for="searchQuery" style="font-size: 18px; font-weight: bold;">Search Cards:</label>
+
+	<!-- Search input field -->
+	<input type="text" id="searchQuery" name="searchQuery" placeholder="Enter card name" value="@ViewData["SearchQuery"]" />
+
+	<!-- Search button -->
+	<button type="submit">Search</button>
+
+	<
 </form>
 
 @if (Model != null && Model.Any())
 {
-    <ul>
-        @foreach (var card in Model)
-        {
-            <li>
-                <img src="/Image/CardName.jpg" alt="Test Image" style="max-width: 200px; height: auto;" onerror="this.style.display='none';" />
-                <strong>@card.Name</strong><br />
-                Type: @card.Type<br />
-                Attribute: @card.Attribute<br />
-                Typing: @card.Typing<br />
-                Level/Rank: @card.Scale<br />
-                Attack: @card.AttackPoints<br />
-                Defense: @card.DefencePoints<br />
-                Description: @card.Description<br />
-
-                <!-- Image debug and display -->
-            </li>
-        }
-    </ul>
+	var card = Model.FirstOrDefault();
+	if (card.Type.Contains("Normal", StringComparison.OrdinalIgnoreCase))
+	{
+		<p><a href="https://yugioh.fandom.com/wiki/Normal_Monster" target="_blank">Learn more about Normal monsters cards on Wikipedia</a></p>
+	}
+	if (card.Type.Contains("Spell", StringComparison.OrdinalIgnoreCase))
+	{
+		<p><a href="https://yugioh.fandom.com/wiki/Spell_Card" target="_blank">Learn more about spell cards on Wikipedia</a></p>
+	}
+	if (card.Type.Contains("Trap", StringComparison.OrdinalIgnoreCase))
+	{
+		<p><a href="https://yugioh.fandom.com/wiki/Trap_Card" target="_blank">Learn more about trap cards on Wikipedia</a></p>
+	}
+	if (card.Type.Contains("Pendulum", StringComparison.OrdinalIgnoreCase))
+	{
+		<p><a href="https://yugioh.fandom.com/wiki/Pendulum_Monster" target="_blank">Learn more about Pendulum cards on Wikipedia</a></p>
+	}
+	else if (card.Type.Contains("XYZ", StringComparison.OrdinalIgnoreCase))
+	{
+		<p><a href="https://yugioh.fandom.com/wiki/Xyz_Monster" target="_blank">Learn more about XYZ cards on Wikipedia</a></p>
+	}
+	else if (card.Type.Contains("Synchro", StringComparison.OrdinalIgnoreCase))
+	{
+		<p><a href="https://yugioh.fandom.com/wiki/Synchro_Monster" target="_blank">Learn more about Synchro cards on Wikipedia</a></p>
+	}
+	else if (card.Type.Contains("Fusion", StringComparison.OrdinalIgnoreCase))
+	{
+		<p><a href="https://yugioh.fandom.com/wiki/Fusion_Monster" target="_blank">Learn more about Fusion cards on Wikipedia</a></p>
+	}
+	<ul>
+		<li>
+			<img src="/Image/CardName.jpg" alt="Test Image" style="max-width: 200px; height: auto;" onerror="this.style.display='none';" />
+			<strong>@card.Name</strong><br />
+			Type: @card.Type<br />
+			Attribute: @card.Attribute<br />
+			Typing: @card.Typing<br />
+			Level/Rank: @card.Scale<br />
+			Attack: @card.AttackPoints<br />
+			Defense: @card.DefencePoints<br />
+			Description: @card.Description<br />
+			<img src="~/Image/@($"{card.Name}.jpg")" alt="@card.Name image" style="max-width: 200px; height: auto;" onerror="this.style.display='none';" />
+		</li>
+	</ul>
 }
 else
 {
-    <p>No cards found for your search.</p>
+	<p>No cards found for your search.</p>
 }

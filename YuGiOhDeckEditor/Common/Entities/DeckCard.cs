@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Entities;
+﻿using Core.Entities;
 
 namespace YuGiOhDeckEditor.Entities
 {
-    public class DeckCard : BaseID
+	public class DeckCard : BaseID
     {
         public int DeckId { get; set; } // Reference to the Deck containing the card.
 

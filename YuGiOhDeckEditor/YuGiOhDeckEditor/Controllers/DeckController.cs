@@ -5,10 +5,8 @@ namespace YuGiOhDeckEditor.Controllers
 {
     public class DeckController : Controller
     {
-        //private readonly IDeckService _deckService;
-        //private readonly ICardService _cardService;
 
-        private static List<DeckInfo> decks = new List<DeckInfo>(); // Replace with your database context
+        private static List<DeckInfo> decks = new List<DeckInfo>();
 
         // GET: Deck
         public IActionResult Index()
@@ -36,8 +34,8 @@ namespace YuGiOhDeckEditor.Controllers
         {
             if (ModelState.IsValid)
             {
-                deckInfo.Id = decks.Count + 1; // Example: generate an Id
-                decks.Add(deckInfo); // Save to memory or DB
+                deckInfo.Id = decks.Count + 1; 
+                decks.Add(deckInfo);
                 return RedirectToAction(nameof(Index));
             }
             return View(deckInfo);
@@ -62,7 +60,7 @@ namespace YuGiOhDeckEditor.Controllers
 
                 deck.Name = deckInfo.Name;
                 deck.Description = deckInfo.Description;
-                deck.UpdatedDeck = deckInfo.UpdatedDeck; // Update other fields as needed
+                deck.UpdatedDeck = deckInfo.UpdatedDeck; 
                 return RedirectToAction(nameof(Index));
             }
             return View(deckInfo);

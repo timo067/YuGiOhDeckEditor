@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Entities;
+﻿using Core.Entities;
 
 namespace YuGiOhDeckEditor.Entities
 {
-    public class UserDecks : BaseID
+	public class UserDecks : BaseID
     {
         public int UserId { get; set; } // Reference to the user
 

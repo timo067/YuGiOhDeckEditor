@@ -1,36 +1,16 @@
 ﻿@model YuGiOhDeckEditor.Entities.BanList
 
-@{
-    ViewData["Title"] = "Details";
-}
+<h2>Ban List Details</h2>
 
-<h1>Details</h1>
+<div class="card">
+    <div class="card-header">
+        <h3>@Model.Name</h3>
+    </div>
+    <div class="card-body">
+        <p><strong>Card ID:</strong> @Model.CardId</p>
+        <p><strong>Limit Type:</strong> @Model.LimitType</p>
+    </div>
+</div>
 
-<div>
-    <h4>BanList</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CardId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CardId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LimitType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LimitType)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<br />
+<a href="@Url.Action("Index", "BanList")" class="btn btn-secondary">Back to List</a>

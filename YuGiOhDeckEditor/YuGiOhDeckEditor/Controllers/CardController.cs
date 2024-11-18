@@ -1,11 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Net.Http;
-using System.Text.Json;
-using YuGiOhDeckEditor.Constants;
-using YuGiOhDeckEditor.Data;
 using YuGiOhDeckEditor.Entities;
-using YuGiOhDeckEditor.Models;
 using YuGiOhDeckEditor.Services;
 
 namespace YuGiOhDeckEditor.Controllers
@@ -25,7 +19,7 @@ namespace YuGiOhDeckEditor.Controllers
 
             if (!string.IsNullOrEmpty(searchQuery))
             {
-                cards = await _externalApiService.GetCardsInfoAsync(searchQuery); // Assuming the API returns a list of cards
+                cards = await _externalApiService.GetCardsInfoAsync(searchQuery);
             }
 
             ViewData["SearchQuery"] = searchQuery;

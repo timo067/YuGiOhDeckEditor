@@ -1,9 +1,8 @@
-﻿using System.Text.Json.Serialization;
-using YuGiOhDeckEditor.Entities;
+﻿using YuGiOhDeckEditor.Entities;
 
 namespace YuGiOhDeckEditor.Models
 {
-    public class CardsModel
+	public class CardsModel
     {
         public CardsModel(CardsInfo cardsInfo)
         {

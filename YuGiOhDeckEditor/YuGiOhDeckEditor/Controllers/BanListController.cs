@@ -1,24 +1,99 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using YuGiOhDeckEditor.Data;
 using YuGiOhDeckEditor.Entities;
 
-namespace YuGiOhDeckEditor.Controllers
+namespace YuGiOhDeckEditor.Common.Entities
 {
     public class BanListController : Controller
     {
-        private static List<BanList> banLists = new List<BanList>(); // Replace with DB context or data storage
+        private readonly ApplicationDbContext _context;
 
-        // GET: BanList
-        public IActionResult Index()
+        public BanListController(ApplicationDbContext context)
         {
-            return View(banLists);
+            _context = context;
         }
 
-        // GET: BanList/Details/5
+        // GET: BanList/Index
+        public IActionResult Index()
+        {
+            var banListItems = _context.BanList.ToList();
+            return View(banListItems);
+        }
+
         public IActionResult Details(int id)
         {
-            var banList = banLists.FirstOrDefault(b => b.Id == id);
-            if (banList == null) return NotFound();
+            var banList = _context.BanList.FirstOrDefault(b => b.Id == id);
+
+            if (banList == null)
+            {
+                return NotFound();
+            }
+
             return View(banList);
+        }
+
+
+        // GET: BanList/AddToBanList
+        [HttpGet]
+        public IActionResult AddToBanList()
+        {
+            ViewBag.LimitTypes = GetLimitTypes();
+            return View(new BanList());
+        }
+
+        // POST: BanList/AddToBanList
+        [HttpPost]
+        public IActionResult AddToBanList(BanList banList)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.BanList.Add(banList);
+                _context.SaveChanges();
+
+                return RedirectToAction("Details", new { id = banList.Id });
+            }
+
+            return View(banList);  // Return the same view if validation fails
+        }
+
+
+        // GET: BanList/Edit/{id}
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var banListEntry = await _context.BanList.FindAsync(id);
+            if (banListEntry == null)
+            {
+                return NotFound();
+            }
+            ViewBag.LimitTypes = GetLimitTypes();
+            return View(banListEntry);
+        }
+
+        // POST: BanList/Edit/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, BanList updatedBanList)
+        {
+            if (id != updatedBanList.Id)
+            {
+                return BadRequest();
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Update(updatedBanList);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.LimitTypes = GetLimitTypes();
+            return View(updatedBanList);
+        }
+
+        private SelectList GetLimitTypes()
+        {
+            return new SelectList(new[] { "Limited", "Forbidden", "Semi-Limited" });
         }
     }
 }

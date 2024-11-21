@@ -25,5 +25,10 @@ namespace YuGiOhDeckEditor.Controllers
             ViewData["SearchQuery"] = searchQuery;
             return View(cards);
         }
-    }
+
+		public IActionResult XYZDetails()
+		{
+			return View();
+		}
+	}
 }

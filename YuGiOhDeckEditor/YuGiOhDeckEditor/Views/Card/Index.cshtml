@@ -18,34 +18,30 @@
 @if (Model != null && Model.Any())
 {
 	var card = Model.FirstOrDefault();
-	if (card.Type.Contains("Normal", StringComparison.OrdinalIgnoreCase))
-	{
-		<p><a href="https://yugioh.fandom.com/wiki/Normal_Monster" target="_blank">Learn more about Normal monsters cards on Wikipedia</a></p>
-	}
-	if (card.Type.Contains("Spell", StringComparison.OrdinalIgnoreCase))
-	{
-		<p><a href="https://yugioh.fandom.com/wiki/Spell_Card" target="_blank">Learn more about spell cards on Wikipedia</a></p>
-	}
-	if (card.Type.Contains("Trap", StringComparison.OrdinalIgnoreCase))
-	{
-		<p><a href="https://yugioh.fandom.com/wiki/Trap_Card" target="_blank">Learn more about trap cards on Wikipedia</a></p>
-	}
-	if (card.Type.Contains("Pendulum", StringComparison.OrdinalIgnoreCase))
-	{
-		<p><a href="https://yugioh.fandom.com/wiki/Pendulum_Monster" target="_blank">Learn more about Pendulum cards on Wikipedia</a></p>
-	}
-	else if (card.Type.Contains("XYZ", StringComparison.OrdinalIgnoreCase))
-	{
-		<p><a href="https://yugioh.fandom.com/wiki/Xyz_Monster" target="_blank">Learn more about XYZ cards on Wikipedia</a></p>
-	}
-	else if (card.Type.Contains("Synchro", StringComparison.OrdinalIgnoreCase))
-	{
-		<p><a href="https://yugioh.fandom.com/wiki/Synchro_Monster" target="_blank">Learn more about Synchro cards on Wikipedia</a></p>
-	}
-	else if (card.Type.Contains("Fusion", StringComparison.OrdinalIgnoreCase))
-	{
-		<p><a href="https://yugioh.fandom.com/wiki/Fusion_Monster" target="_blank">Learn more about Fusion cards on Wikipedia</a></p>
-	}
+    if (card.Type.Contains("Pendulum", StringComparison.OrdinalIgnoreCase))
+    {
+        <form method="get" action="@Url.Action("PendulumDetails", "Card")">
+            <button type="submit" class="btn btn-primary">Learn More</button>
+        </form>
+    }
+    else if (card.Type.Contains("XYZ", StringComparison.OrdinalIgnoreCase))
+    {
+        <form method="get" action="@Url.Action("XYZDetails", "Card")">
+            <button type="submit" class="btn btn-primary">Learn More</button>
+        </form>
+    }
+    else if (card.Type.Contains("Synchro", StringComparison.OrdinalIgnoreCase))
+    {
+        <form method="get" action="@Url.Action("SynchroDetails", "Card")">
+            <button type="submit" class="btn btn-primary">Learn More</button>
+        </form>
+    }
+    else if (card.Type.Contains("Fusion", StringComparison.OrdinalIgnoreCase))
+    {
+        <form method="get" action="@Url.Action("FusionDetails", "Card")">
+            <button type="submit" class="btn btn-primary">Learn More</button>
+        </form>
+    }
 	<ul>
 		<li>
 			<img src="/Image/CardName.jpg" alt="Test Image" style="max-width: 200px; height: auto;" onerror="this.style.display='none';" />
@@ -57,7 +53,6 @@
 			Attack: @card.AttackPoints<br />
 			Defense: @card.DefencePoints<br />
 			Description: @card.Description<br />
-			<img src="~/Image/@($"{card.Name}.jpg")" alt="@card.Name image" style="max-width: 200px; height: auto;" onerror="this.style.display='none';" />
 		</li>
 	</ul>
 }

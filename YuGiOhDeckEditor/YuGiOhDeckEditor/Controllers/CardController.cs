@@ -30,5 +30,10 @@ namespace YuGiOhDeckEditor.Controllers
 		{
 			return View();
 		}
-	}
+
+        public IActionResult PendulumDetails()
+        {
+            return View();
+        }
+    }
 }

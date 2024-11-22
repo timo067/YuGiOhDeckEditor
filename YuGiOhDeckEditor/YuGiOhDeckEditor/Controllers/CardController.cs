@@ -35,5 +35,15 @@ namespace YuGiOhDeckEditor.Controllers
         {
             return View();
         }
+
+        public IActionResult SynchroDetails()
+        {
+            return View();
+        }
+
+        public IActionResult FusionDetails()
+        {
+            return View();
+        }
     }
 }

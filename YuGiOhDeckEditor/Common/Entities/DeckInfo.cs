@@ -7,17 +7,16 @@ namespace YuGiOhDeckEditor.Entities
         public string Name { get; set; }
         public string OwnerId { get; set; }
         public string Description { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime UpdatedDeck { get; set; }
+
+        public List<CardsInfo> Cards { get; set; } = new List<CardsInfo>();
 
         // Constructor with parameters (optional for convenience)
-        public DeckInfo(string name, string ownerId, string description, DateTime dateCreated, DateTime updatedDeck)
+        public DeckInfo(string name, string ownerId, string description, List<CardsInfo> cards)
         {
             Name = name;
             OwnerId = ownerId;
             Description = description;
-            DateCreated = dateCreated;
-            UpdatedDeck = updatedDeck;
+            Cards = cards;
         }
 
         public DeckInfo()

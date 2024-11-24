@@ -32,7 +32,6 @@
                     <div class="deck-info">
                         <strong>@deck.Name</strong>
                         <p>@deck.Description</p>
-                        <p><em>Created: @deck.DateCreated.ToString("MM/dd/yyyy")</em></p>
                     </div>
                     <div class="deck-actions">
                         <a href="@Url.Action("Edit", "Deck", new { id = deck.Id })">Edit</a>

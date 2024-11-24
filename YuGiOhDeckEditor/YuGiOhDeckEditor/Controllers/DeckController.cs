@@ -1,12 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using YuGiOhDeckEditor.Data;
 using YuGiOhDeckEditor.Entities;
 
 namespace YuGiOhDeckEditor.Controllers
 {
     public class DeckController : Controller
     {
-
+        private readonly ApplicationDbContext _context;
         private static List<DeckInfo> decks = new List<DeckInfo>();
+
+        public DeckController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         // GET: Deck
         public IActionResult Index()
@@ -15,10 +21,15 @@ namespace YuGiOhDeckEditor.Controllers
         }
 
         // GET: Deck/Details/5
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var deck = decks.FirstOrDefault(d => d.Id == id);
-            if (deck == null) return NotFound();
+            var deck = await _context.Decks
+                .Include(d => d.Cards)
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (deck == null)
+                return NotFound();
+
             return View(deck);
         }
 
@@ -30,15 +41,52 @@ namespace YuGiOhDeckEditor.Controllers
 
         // POST: Deck/Create
         [HttpPost]
-        public IActionResult Create(DeckInfo deckInfo)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(DeckInfo deck)
         {
             if (ModelState.IsValid)
             {
-                deckInfo.Id = decks.Count + 1; 
-                decks.Add(deckInfo);
+                _context.Decks.Add(deck);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(deckInfo);
+            return View(deck);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddCard(int deckId)
+        {
+            var deck = await _context.Decks.FindAsync(deckId);
+            if (deck == null)
+                return NotFound();
+
+            ViewBag.DeckId = deckId;
+            ViewBag.AvailableCards = await _context.Cards.ToListAsync();
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddCard(int deckId, int cardId)
+        {
+            var deck = await _context.Decks
+                .Include(d => d.Cards)
+                .FirstOrDefaultAsync(d => d.Id == deckId);
+
+            if (deck == null)
+                return NotFound();
+
+            var card = await _context.Cards.FindAsync(cardId);
+            if (card == null)
+                return NotFound();
+
+            if (!deck.Cards.Contains(card))
+            {
+                deck.Cards.Add(card);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Details), new { id = deckId });
         }
 
         // GET: Deck/Edit/5
@@ -60,7 +108,6 @@ namespace YuGiOhDeckEditor.Controllers
 
                 deck.Name = deckInfo.Name;
                 deck.Description = deckInfo.Description;
-                deck.UpdatedDeck = deckInfo.UpdatedDeck; 
                 return RedirectToAction(nameof(Index));
             }
             return View(deckInfo);

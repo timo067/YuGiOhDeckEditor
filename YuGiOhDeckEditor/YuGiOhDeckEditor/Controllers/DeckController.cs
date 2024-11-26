@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using YuGiOhDeckEditor.Data;
 using YuGiOhDeckEditor.Entities;
 
@@ -7,28 +8,45 @@ namespace YuGiOhDeckEditor.Controllers
     public class DeckController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private static List<DeckInfo> decks = new List<DeckInfo>();
 
         public DeckController(ApplicationDbContext context)
         {
             _context = context;
         }
 
+        // Add a card to a deck
+
         // GET: Deck
-        public IActionResult Index()
+        // DeckController.cs
+        public async Task<IActionResult> Index()
         {
+            var decks = await _context.DeckInfo.ToListAsync();
+
+            if (!decks.Any())
+            {
+                Console.WriteLine("No decks found in the database.");
+            }
+            else
+            {
+                Console.WriteLine($"Retrieved {decks.Count} decks.");
+            }
+
             return View(decks);
         }
+
+
 
         // GET: Deck/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var deck = await _context.Decks
-                .Include(d => d.Cards)
-                .FirstOrDefaultAsync(d => d.Id == id);
-
+            var deck = await _context.DeckInfo
+                                      .Include(d => d.DeckCards)
+                                          .ThenInclude(dc => dc.Card)  // Include the related CardsInfo
+                                      .FirstOrDefaultAsync(d => d.Id == id);
             if (deck == null)
+            {
                 return NotFound();
+            }
 
             return View(deck);
         }
@@ -41,94 +59,60 @@ namespace YuGiOhDeckEditor.Controllers
 
         // POST: Deck/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(DeckInfo deck)
+        public async Task<IActionResult> Create(DeckInfo deckInfo)
         {
             if (ModelState.IsValid)
             {
-                _context.Decks.Add(deck);
+                _context.DeckInfo.Add(deckInfo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(deck);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> AddCard(int deckId)
-        {
-            var deck = await _context.Decks.FindAsync(deckId);
-            if (deck == null)
-                return NotFound();
-
-            ViewBag.DeckId = deckId;
-            ViewBag.AvailableCards = await _context.Cards.ToListAsync();
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddCard(int deckId, int cardId)
-        {
-            var deck = await _context.Decks
-                .Include(d => d.Cards)
-                .FirstOrDefaultAsync(d => d.Id == deckId);
-
-            if (deck == null)
-                return NotFound();
-
-            var card = await _context.Cards.FindAsync(cardId);
-            if (card == null)
-                return NotFound();
-
-            if (!deck.Cards.Contains(card))
-            {
-                deck.Cards.Add(card);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToAction(nameof(Details), new { id = deckId });
+            return View(deckInfo);
         }
 
         // GET: Deck/Edit/5
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var deck = decks.FirstOrDefault(d => d.Id == id);
+            var deck = await _context.DeckInfo.FindAsync(id);
             if (deck == null) return NotFound();
             return View(deck);
         }
 
         // POST: Deck/Edit/5
         [HttpPost]
-        public IActionResult Edit(int id, DeckInfo deckInfo)
+        public async Task<IActionResult> Edit(int id, DeckInfo deckInfo)
         {
             if (ModelState.IsValid)
             {
-                var deck = decks.FirstOrDefault(d => d.Id == id);
+                var deck = await _context.DeckInfo.FindAsync(id);
                 if (deck == null) return NotFound();
 
                 deck.Name = deckInfo.Name;
                 deck.Description = deckInfo.Description;
+
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(deckInfo);
         }
 
         // GET: Deck/Delete/5
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var deck = decks.FirstOrDefault(d => d.Id == id);
+            var deck = await _context.DeckInfo.FindAsync(id);
             if (deck == null) return NotFound();
             return View(deck);
         }
 
         // POST: Deck/Delete/5
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var deck = decks.FirstOrDefault(d => d.Id == id);
+            var deck = await _context.DeckInfo.FindAsync(id);
             if (deck != null)
             {
-                decks.Remove(deck);
+                _context.DeckInfo.Remove(deck);
+                await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
         }

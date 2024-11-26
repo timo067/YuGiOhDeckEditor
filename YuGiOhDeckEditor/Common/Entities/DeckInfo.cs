@@ -8,15 +8,15 @@ namespace YuGiOhDeckEditor.Entities
         public string OwnerId { get; set; }
         public string Description { get; set; }
 
-        public List<CardsInfo> Cards { get; set; } = new List<CardsInfo>();
+        public ICollection<CardsInfo> DeckCards { get; set; }
 
         // Constructor with parameters (optional for convenience)
-        public DeckInfo(string name, string ownerId, string description, List<CardsInfo> cards)
+        public DeckInfo(string name, string ownerId, string description, List<CardsInfo> deckCards)
         {
             Name = name;
             OwnerId = ownerId;
             Description = description;
-            Cards = cards;
+            DeckCards = deckCards;
         }
 
         public DeckInfo()

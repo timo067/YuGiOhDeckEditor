@@ -47,5 +47,7 @@ namespace YuGiOhDeckEditor.Entities
         public int Limit { get; set; }
 
         public string ImageUrl { get; set; }
+
+        public string Card { get; set; }
     }
 }

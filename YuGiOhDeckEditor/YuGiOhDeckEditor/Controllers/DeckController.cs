@@ -28,7 +28,8 @@ namespace YuGiOhDeckEditor.Controllers
         {
             var deck = decks.FirstOrDefault(d => d.Id == id);
             if (deck == null) return NotFound();
-            return View(deck); // Passes a DeckInfo object to the view
+
+            return View(deck); // Ensure this deck contains the updated Cards list
         }
 
         // GET: Deck/Create
@@ -94,41 +95,75 @@ namespace YuGiOhDeckEditor.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Deck/AddCard/5
         public async Task<IActionResult> AddCard(int id, string searchTerm = "")
         {
             var deck = decks.FirstOrDefault(d => d.Id == id);
             if (deck == null) return NotFound();
 
+            // Fetch cards based on search term using the ExternalApiService
             var cards = string.IsNullOrEmpty(searchTerm)
-                ? new List<CardsInfo>()
+                ? new List<CardsInfo>() // Empty list if no search term provided
                 : await _externalApiService.GetCardsInfoAsync(searchTerm);
 
             var viewModel = new AddCardViewModel
             {
-                Id = id,  // Deck ID
-                Deck = deck,  // DeckInfo
-                Cards = cards,  // List of Cards
+                Id = id,         // Deck ID
+                Deck = deck,     // The specific deck
+                Cards = cards,   // Cards fetched from the API
                 SearchTerm = searchTerm
             };
 
-            return View(viewModel);  // Pass AddCardViewModel to the view
+            return View(viewModel);  // Pass the view model to the view
         }
 
-        // POST: Deck/AddCard/5
+
+        // POST: Deck/AddMultipleCards
         [HttpPost]
-        public IActionResult AddCardToDeck(int deckId, int cardId)
+        public IActionResult AddMultipleCards(int deckId, List<int> cardIds)
         {
             var deck = decks.FirstOrDefault(d => d.Id == deckId);
             if (deck == null) return NotFound();
 
-            var card = new CardsInfo { Id = cardId, Name = $"Card {cardId}" }; // Replace with real API data
-            if (!deck.Cards.Any(c => c.Id == cardId)) // Avoid duplicate cards
+            // Add multiple cards to the deck
+            foreach (var cardId in cardIds)
             {
-                deck.Cards.Add(card);
+                if (!deck.Cards.Any(c => c.Id == cardId))
+                {
+                    var card = new CardsInfo { Id = cardId, Name = $"Card {cardId}" }; // Simulate card fetch
+                    deck.Cards.Add(card);
+                }
             }
 
             return RedirectToAction("Details", new { id = deckId });
         }
-    }
+
+
+		// POST: Deck/AddCard/5
+		[HttpPost]
+		public async Task<IActionResult> AddCardToDeck(int deckId, string cardName)
+		{
+			// Find the deck to which the card should be added
+			var deck = decks.FirstOrDefault(d => d.Id == deckId);
+			if (deck == null) return NotFound();
+
+			// Fetch the card's actual information using the External API Service
+			var cardInfo = await _externalApiService.GetCardsInfoAsync(cardName);
+
+			// Ensure the card is found in the fetched data
+			var card = cardInfo.FirstOrDefault();  // Assuming the API returns a list of cards
+			if (card == null)
+			{
+				return NotFound($"Card with name {cardName} not found.");
+			}
+
+			// Ensure the card isn't already in the deck
+			if (!deck.Cards.Any(c => c.Id == card.Id))
+			{
+				deck.Cards.Add(card); // Add the actual card object to the deck
+			}
+
+			return RedirectToAction("Index"); // Redirect to the Index action to show the updated deck
+		}
+
+	}
 }

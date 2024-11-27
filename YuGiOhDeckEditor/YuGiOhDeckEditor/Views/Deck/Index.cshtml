@@ -1,35 +1,70 @@
 ﻿@model IEnumerable<YuGiOhDeckEditor.Entities.DeckInfo>
 
-<div class="container">
-    <h1>Decks</h1>
-    @if (Model.Any())
+<link rel="stylesheet" href="~/css/Deck.css" />
+
+<h2>Your Decks</h2>
+
+<!-- Deck creation form -->
+<div class="deck-form">
+    <h3>Create a New Deck</h3>
+    <form method="post" action="@Url.Action("Create", "Deck")">
+        <div class="form-group">
+            <label for="name">Deck Name:</label>
+            <input type="text" id="name" name="name" required placeholder="Enter deck name" />
+        </div>
+        <div class="form-group">
+            <label for="description">Deck Description:</label>
+            <textarea id="description" name="description" required placeholder="Describe your deck..."></textarea>
+        </div>
+        <button type="submit">Create Deck</button>
+    </form>
+</div>
+
+<!-- Decks list -->
+<h3>Your Existing Decks</h3>
+<div class="deck-list">
+    @if (Model != null && Model.Any())
     {
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var deck in Model)
-                {
-                    <tr>
-                        <td>@deck.Name</td>
-                        <td>@deck.Description</td>
-                        <td>
-                            <a href="@Url.Action("Details", new { id = deck.Id })" class="btn btn-info">View</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <ul>
+            @foreach (var deck in Model)
+            {
+                <li class="deck-item">
+                    <div class="deck-info">
+                        <strong>@deck.Name</strong>
+                        <p>@deck.Description</p>
+                        <h5>Cards in Deck:</h5>
+                        @if (deck.Cards != null && deck.Cards.Any())
+                        {
+                            <ul class="card-list">
+                                @foreach (var card in deck.Cards.Take(3))
+                                {
+                                    <li>
+                                        <strong>@card.Name</strong> - @card.Type
+                                    </li>
+                                }
+                            </ul>
+                            @if (deck.Cards.Count > 3)
+                            {
+                                <p>...and more</p>
+                            }
+                        }
+                        else
+                        {
+                            <p>No cards in this deck yet.</p>
+                        }
+                    </div>
+                    <div class="deck-actions">
+                        <a href="@Url.Action("Details", "Deck", new { id = deck.Id })">View Details</a>
+                        <a href="@Url.Action("AddCard", "Deck", new { id = deck.Id })">Add Card</a>
+                        <a href="@Url.Action("Edit", "Deck", new { id = deck.Id })">Edit</a>
+                        <a href="@Url.Action("Delete", "Deck", new { id = deck.Id })">Delete</a>
+                    </div>
+                </li>
+            }
+        </ul>
     }
     else
     {
-        <div class="alert alert-warning">
-            No decks available.
-        </div>
+        <p>No decks found. Create one to get started!</p>
     }
 </div>

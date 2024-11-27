@@ -49,5 +49,6 @@ namespace YuGiOhDeckEditor.Entities
         public string ImageUrl { get; set; }
 
         public string Card { get; set; }
+        public ICollection<DeckCard> DeckCards { get; set; } = new List<DeckCard>();
     }
 }

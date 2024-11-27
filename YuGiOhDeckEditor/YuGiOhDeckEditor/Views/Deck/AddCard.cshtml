@@ -1,0 +1,37 @@
+﻿@model Common.Entities.AddCardViewModel
+
+<h2>Add Cards to Deck</h2>
+
+<!-- Search form -->
+<form method="get" action="@Url.Action("AddCard", new { id = Model.Id, searchTerm = Model.SearchTerm })">
+    <div class="form-group">
+        <label for="searchTerm">Search Cards:</label>
+        <input type="text" id="searchTerm" name="searchTerm" value="@Model.SearchTerm" />
+        <button type="submit">Search</button>
+    </div>
+</form>
+
+<!-- Display cards -->
+@if (Model.Cards != null && Model.Cards.Any())
+{
+    <ul>
+        @foreach (var card in Model.Cards)
+        {
+            <li>
+                <strong>@card.Name</strong>
+                <a href="@Url.Action("AddCardToDeck", "Deck", new { deckId = Model.Id, cardId = card.Id })">Add to Deck</a>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No cards found.</p>
+}
+
+<!-- Deck Info -->
+<div>
+    <h3>Deck Information</h3>
+    <p><strong>Name:</strong> @Model.Deck.Name</p>
+    <p><strong>Description:</strong> @Model.Deck.Description</p>
+</div>

@@ -1,54 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Common.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using YuGiOhDeckEditor.Data;
 using YuGiOhDeckEditor.Entities;
+using YuGiOhDeckEditor.Services;
 
 namespace YuGiOhDeckEditor.Controllers
 {
     public class DeckController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ExternalApiService _externalApiService;
+        private static List<DeckInfo> decks = new List<DeckInfo>();
 
-        public DeckController(ApplicationDbContext context)
+        public DeckController(ExternalApiService externalApiService)
         {
-            _context = context;
+            _externalApiService = externalApiService;
         }
-
-        // Add a card to a deck
 
         // GET: Deck
-        // DeckController.cs
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var decks = await _context.DeckInfo.ToListAsync();
-
-            if (!decks.Any())
-            {
-                Console.WriteLine("No decks found in the database.");
-            }
-            else
-            {
-                Console.WriteLine($"Retrieved {decks.Count} decks.");
-            }
-
-            return View(decks);
+            return View(decks); // decks is List<DeckInfo>
         }
 
-
-
         // GET: Deck/Details/5
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(int id)
         {
-            var deck = await _context.DeckInfo
-                                      .Include(d => d.DeckCards)
-                                          .ThenInclude(dc => dc.Card)  // Include the related CardsInfo
-                                      .FirstOrDefaultAsync(d => d.Id == id);
-            if (deck == null)
-            {
-                return NotFound();
-            }
-
-            return View(deck);
+            var deck = decks.FirstOrDefault(d => d.Id == id);
+            if (deck == null) return NotFound();
+            return View(deck); // Passes a DeckInfo object to the view
         }
 
         // GET: Deck/Create
@@ -59,62 +39,96 @@ namespace YuGiOhDeckEditor.Controllers
 
         // POST: Deck/Create
         [HttpPost]
-        public async Task<IActionResult> Create(DeckInfo deckInfo)
+        public IActionResult Create(DeckInfo deckInfo)
         {
             if (ModelState.IsValid)
             {
-                _context.DeckInfo.Add(deckInfo);
-                await _context.SaveChangesAsync();
+                deckInfo.Id = decks.Count + 1;
+                decks.Add(deckInfo);
                 return RedirectToAction(nameof(Index));
             }
             return View(deckInfo);
         }
 
         // GET: Deck/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
-            var deck = await _context.DeckInfo.FindAsync(id);
+            var deck = decks.FirstOrDefault(d => d.Id == id);
             if (deck == null) return NotFound();
             return View(deck);
         }
 
         // POST: Deck/Edit/5
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, DeckInfo deckInfo)
+        public IActionResult Edit(int id, DeckInfo deckInfo)
         {
             if (ModelState.IsValid)
             {
-                var deck = await _context.DeckInfo.FindAsync(id);
+                var deck = decks.FirstOrDefault(d => d.Id == id);
                 if (deck == null) return NotFound();
 
                 deck.Name = deckInfo.Name;
                 deck.Description = deckInfo.Description;
-
-                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(deckInfo);
         }
 
         // GET: Deck/Delete/5
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
-            var deck = await _context.DeckInfo.FindAsync(id);
+            var deck = decks.FirstOrDefault(d => d.Id == id);
             if (deck == null) return NotFound();
             return View(deck);
         }
 
         // POST: Deck/Delete/5
         [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var deck = await _context.DeckInfo.FindAsync(id);
+            var deck = decks.FirstOrDefault(d => d.Id == id);
             if (deck != null)
             {
-                _context.DeckInfo.Remove(deck);
-                await _context.SaveChangesAsync();
+                decks.Remove(deck);
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Deck/AddCard/5
+        public async Task<IActionResult> AddCard(int id, string searchTerm = "")
+        {
+            var deck = decks.FirstOrDefault(d => d.Id == id);
+            if (deck == null) return NotFound();
+
+            var cards = string.IsNullOrEmpty(searchTerm)
+                ? new List<CardsInfo>()
+                : await _externalApiService.GetCardsInfoAsync(searchTerm);
+
+            var viewModel = new AddCardViewModel
+            {
+                Id = id,  // Deck ID
+                Deck = deck,  // DeckInfo
+                Cards = cards,  // List of Cards
+                SearchTerm = searchTerm
+            };
+
+            return View(viewModel);  // Pass AddCardViewModel to the view
+        }
+
+        // POST: Deck/AddCard/5
+        [HttpPost]
+        public IActionResult AddCardToDeck(int deckId, int cardId)
+        {
+            var deck = decks.FirstOrDefault(d => d.Id == deckId);
+            if (deck == null) return NotFound();
+
+            var card = new CardsInfo { Id = cardId, Name = $"Card {cardId}" }; // Replace with real API data
+            if (!deck.Cards.Any(c => c.Id == cardId)) // Avoid duplicate cards
+            {
+                deck.Cards.Add(card);
+            }
+
+            return RedirectToAction("Details", new { id = deckId });
         }
     }
 }

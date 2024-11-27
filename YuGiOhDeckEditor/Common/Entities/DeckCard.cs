@@ -5,7 +5,7 @@ namespace YuGiOhDeckEditor.Entities
     public class DeckCard:BaseID
     {
         public int DeckId { get; set; }
-        public DeckInfo Deck { get; set; } // Navigation property to DeckInfo
+        public DeckInfo Deck { get; set; }
         public int CardId { get; set; }
         public CardsInfo Card { get; set; } // Navigation property to CardsInfo
         public int Quantity { get; set; }

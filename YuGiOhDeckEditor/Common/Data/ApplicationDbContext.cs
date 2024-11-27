@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Common.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using YuGiOhDeckEditor.Entities;
@@ -63,6 +64,9 @@ namespace YuGiOhDeckEditor.Data
                 .HasIndex(c => c.Name)
                 .IsUnique(); // Ensure card names are unique
 
+            modelBuilder.Entity<AddCardViewModel>().HasNoKey();
+
+
             // Further configurations can be added as needed, such as relationships for BanList and other tables.
         }
 
@@ -72,5 +76,6 @@ namespace YuGiOhDeckEditor.Data
         public DbSet<UserDecks> UserDecks { get; set; } // Example entity
         public DbSet<CardType> CardType { get; set; } // Example entity
         public DbSet<DeckCard> DeckCard { get; set; } // Example entity
+        public DbSet<AddCardViewModel> AddCardViewModel { get; set; } // Example entity
     }
 }

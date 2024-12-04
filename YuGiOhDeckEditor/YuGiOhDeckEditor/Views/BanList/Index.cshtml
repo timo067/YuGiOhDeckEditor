@@ -45,6 +45,14 @@
 
 							<!-- View Details Button -->
 							<a href="@Url.Action("Details", new { id = banList.Id })" class="btn btn-info mt-2">View Details</a>
+
+
+							<!-- Add Delete Button -->
+							<form asp-action="Delete" method="get" style="display:inline;">
+								<input type="hidden" name="id" value="@banList.Id" />
+								<button type="submit" class="btn btn-danger mt-2">Delete</button>
+							</form>
+
 						</div>
 					</div>
 				</div>

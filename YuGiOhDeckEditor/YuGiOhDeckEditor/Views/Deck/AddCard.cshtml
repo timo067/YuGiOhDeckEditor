@@ -1,38 +1,39 @@
 ﻿@model Common.Entities.AddCardViewModel
 
-<h2>Add Card to Deck: @Model.Deck.Name</h2>
+<h2>Add Cards to Deck: @Model.Deck.Name</h2>
 
-<!-- Search Form -->
-<form method="get" asp-action="AddCard" asp-route-id="@Model.Id">
-    <input type="text" name="searchTerm" value="@Model.SearchTerm" placeholder="Search cards" />
-    <button type="submit">Search</button>
+<!-- Add Cards to Deck Form -->
+<form method="post" asp-action="AddCardsToDeck" id="addCardsForm">
+    <input type="hidden" name="deckId" value="@Model.Deck.Id" />
+
+    <!-- Display Card Input Fields -->
+    <div id="cardInputs">
+        <input type="text" name="cardNames" placeholder="Enter Card Name" />
+    </div>
+
+    <!-- Display Cards -->
+    @if (Model.Cards != null && Model.Cards.Any())
+    {
+        <ul>
+            @foreach (var card in Model.Cards)
+            {
+                <li>
+                    <strong>@card.Name</strong> - @card.Type <br />
+                    ATK: @card.AttackPoints | DEF: @card.DefencePoints <br />
+                    <input type="checkbox" name="CardNames" value="@card.Name" /> @card.Name <br />
+                </li>
+            }
+        </ul>
+    }
+    else if (!string.IsNullOrEmpty(Model.SearchTerm))
+    {
+        <p>No cards found for "@Model.SearchTerm".</p>
+    }
+    else
+    {
+        <p>Search for cards to add them to this deck.</p>
+    }
+
+    <!-- Submit Button -->
+    <button type="submit">Add Selected Cards</button>
 </form>
-
-<!-- Display Cards -->
-@if (Model.Cards != null && Model.Cards.Any())
-{
-    <ul>
-        @foreach (var card in Model.Cards)
-        {
-            <li>
-                <strong>@card.Name</strong> - @card.Type <br />
-                ATK: @card.AttackPoints | DEF: @card.DefencePoints <br />
-
-                <!-- Add card to deck -->
-                <form method="post" asp-action="AddCardToDeck">
-                    <input type="hidden" name="deckId" value="@Model.Deck.Id" />
-                    <input type="text" name="cardName" placeholder="Enter card name" />
-                    <button type="submit">Add to Deck</button>
-                </form>
-            </li>
-        }
-    </ul>
-}
-else if (!string.IsNullOrEmpty(Model.SearchTerm))
-{
-    <p>No cards found for "@Model.SearchTerm".</p>
-}
-else
-{
-    <p>Search for cards to add them to this deck.</p>
-}

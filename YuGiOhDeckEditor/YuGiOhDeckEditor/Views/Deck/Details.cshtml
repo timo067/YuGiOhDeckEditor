@@ -1,22 +1,19 @@
 ﻿@model YuGiOhDeckEditor.Entities.DeckInfo
 
-<h2>Deck: @Model.Name</h2>
-<p>@Model.Description</p>
-
-<h3>Cards:</h3>
-@if (Model.Cards != null && Model.Cards.Any())
-{
-    <ul>
+<h3>Cards in Deck:</h3>
+<ul>
+    @if (Model.Cards != null && Model.Cards.Any())
+    {
         @foreach (var card in Model.Cards)
         {
             <li>
-                <strong>@card.Name</strong> - @card.Type<br />
+                <strong>@card.Name</strong> - @card.Type <br />
                 ATK: @card.AttackPoints | DEF: @card.DefencePoints
             </li>
         }
-    </ul>
-}
-else
-{
-    <p>No cards added to this deck yet.</p>
-}
+    }
+    else
+    {
+        <p>No cards in this deck yet.</p>
+    }
+</ul>

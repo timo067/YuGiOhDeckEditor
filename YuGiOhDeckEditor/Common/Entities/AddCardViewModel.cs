@@ -4,9 +4,10 @@ namespace Common.Entities
 {
     public class AddCardViewModel
     {
-        public int Id { get; set; }  // Temporary ID for ViewModel usage, not for EF.
-        public DeckInfo Deck { get; set; }  // Deck information
-        public List<CardsInfo> Cards { get; set; }  // List of cards to select from
-        public string SearchTerm { get; set; }
+        public int Id { get; set; } // Deck ID
+        public DeckInfo Deck { get; set; } // Deck object
+        public List<CardsInfo> Cards { get; set; } // List of cards to display
+        public string SearchTerm { get; set; } // Search term for filtering cards
+        public List<string> CardNames { get; set; } // List of card names to add
     }
 }

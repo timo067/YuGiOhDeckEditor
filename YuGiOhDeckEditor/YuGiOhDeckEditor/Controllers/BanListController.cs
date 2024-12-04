@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using YuGiOhDeckEditor.Data;
 using YuGiOhDeckEditor.Entities;
 
@@ -57,7 +58,6 @@ namespace YuGiOhDeckEditor.Common.Entities
             return View(banList);  // Return the same view if validation fails
         }
 
-
         // GET: BanList/Edit/{id}
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -83,8 +83,22 @@ namespace YuGiOhDeckEditor.Common.Entities
 
             if (ModelState.IsValid)
             {
-                _context.Update(updatedBanList);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    _context.Update(updatedBanList);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.BanList.Any(b => b.Id == updatedBanList.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.LimitTypes = GetLimitTypes();
@@ -94,6 +108,18 @@ namespace YuGiOhDeckEditor.Common.Entities
         private SelectList GetLimitTypes()
         {
             return new SelectList(new[] { "Limited", "Forbidden", "Semi-Limited" });
+        }
+
+        // GET: BanList/Delete/{id}
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var banList = await _context.BanList.FindAsync(id);
+            if (banList == null)
+            {
+                return NotFound();
+            }
+            return View(banList);
         }
     }
 }
